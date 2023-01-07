@@ -1,0 +1,62 @@
+<div th:fragment="html">
+    <script>
+        $(function(){
+            var oid = getUrlParms("oid");
+            var total = getUrlParms("total");
+            var data4Vue = {
+                uri:'forepayed',
+                order:[],
+                total:0
+            };
+            //ViewModel
+            var vue = new Vue({
+                el: '#workingArea',
+                data: data4Vue,
+                mounted:function(){
+                    this.total = total;
+                    this.load();
+                },
+                methods: {
+                    load:function(){
+                        var url =  this.uri+"?oid="+oid;
+                        axios.get(url).then(function(response) {
+                            vue.order = response.data;
+                        });
+                    }
+                }
+            });
+
+        })
+
+    </script>
+
+    <div class="payedDiv">
+        <div class="payedTextDiv">
+            <img src="img/site/paySuccess.png">
+            <span>you have payed successfully</span>
+
+        </div>
+        <div class="payedAddressInfo">
+            <ul>
+                <li>receive address：{{order.address}} {{order.receiver}} {{order.mobile }}</li>
+                <li>pay：<span class="payedInfoPrice">
+                    {{total|formatMoney}}
+                </li>
+            </ul>
+
+            <div class="paedCheckLinkDiv">
+                you can
+                <a class="payedCheckLink" href="bought">check your phuased item</a>
+                <a class="payedCheckLink" href="bought">see the detial info </a>
+            </div>
+
+        </div>
+
+        <div class="payedSeperateLine">
+        </div>
+
+        <div class="warningDiv">
+            <img src="img/site/warning.png">
+        </div>
+    </div>
+</div>

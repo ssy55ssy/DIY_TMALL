@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="include/admin/adminHeader::html('product management')" ></head>
+<body>
+<div th:replace="include/admin/adminNavigator::html" ></div>
+<script>
+    $(function(){
+        var cid = getUrlParms("cid");
+        var data4Vue = {
+            uri:'products',
+            pagination:{},
+            beans: [],
+            bean: {id:0,name:'','subTitle':'','originalPrice':99.98,'promotePrice':19.98,'stock':99,category:{id:0}},
+            category:''
+        };
+
+        //ViewModel
+        var vue = new Vue({
+            el: '#workingArea',
+            data: data4Vue,
+            mounted:function(){
+                this.getCategory(cid);
+                this.list(0);
+            },
+            methods: {
+                getCategory:function(cid){
+                    var url = "categories/" + cid;
+                    axios.get(url).then(function(response){
+                        this.category = response.data;
+                    })
+                },
+                list:function(start){
+                    var url =  "categories/" + cid + "/" + this.uri + "?start=" + start;
+                    axios.get(url).then(function(response) {
+                        vue.beans = response.data.content;
+                        vue.pagination = response.data;
+                    });
+                },
+                jump:function(page){
+                    jump(page,vue);
+                },
+                jumpByNumber:function(page){
+                    jumpByNumber(page,vue);
+                },
+                add:function(){
+                    if(!checkEmpty(this.bean.name,'name'))
+                        return;
+                    if(!checkEmpty(this.bean.subTitle,'subTitle'))
+                        return;
+                    if(!checkEmpty(this.bean.originalPrice,'originalPrice'))
+                        return;
+                    if(!checkEmpty(this.bean.promotePrice,'promotePrice'))
+                        return;
+                    if(!checkEmpty(this.bean.stock,'stock'))
+                        return;
+                    var url = this.uri;
+                    this.bean.category.id = cid;
+                    axios.post(url,this.bean).then(function(response){
+                        vue.list(0);
+                        vue.bean = {id:0,name:'','subTitle':'','originalPrice':99.98,'promotePrice':19.98,'stock':99,category:{id:0}};
+                    })
+                },
+                deleteBean:function(id){
+                    if(!checkDeleteLink())
+                        return;
+                    var url = this.uri + "/" + id;
+                    axios.delete(url).then(function(response){
+                        if(0!=response.data.length){
+                            alert(response.data);
+                        }else{
+                            vue.list(0);
+                        }
+                    })
+                }
+            }
+        });
+    });
+
+</script>
+<div id="workingArea" >
+    <h1 class="label label-info" >property management</h1>
+    <br>
+    <br>
+    <div class="listDataTableDiv">
+        <table class="table table-striped table-bordered table-hover  table-condensed">
+            <thead>
+            <tr class="success">
+                <th>ID</th>
+                <th>picture</th>
+                <th>product name</th>
+                <th>product subtitle</th>
+                <th>if recommend</th>
+                <th>original price</th>
+                <th>promoted price</th>
+                <th>stock</th>
+                <th>picture management</th>
+                <th>set attribute</th>
+                <th>edit</th>
+                <th>delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="bean in beans ">
+                <td>{{bean.id}}</td>
+                <td></td>
+                <td>
+                    {{bean.name}}
+                </td>
+                <td>{{bean.subTitle}}</td>
+                <td>{{bean.ifRecommend}}</td>
+                <td>{{bean.originalPrice}}</td>
+                <td>{{bean.promotePrice}}</td>
+                <td>{{bean.stock}}</td>
+                <td>
+                    <a :href="'admin_productImage_list?pid=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+                <td>
+                    <a :href="'admin_propertyValue_edit?pid=' + bean.id"><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+                <td>
+                    <a :href="'admin_product_edit?id=' + bean.id "><span class="glyphicon glyphicon-edit"></span></a>
+                </td>
+                <td>
+                    <a href="#nowhere"  @click="deleteBean(bean.id)"><span class="   glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="include/admin/adminPage::html" ></div>
+    <div class="panel panel-warning addDiv">
+        <div class="panel-heading">create new product</div>
+        <div class="panel-body">
+            <table class="addTable">
+                <tr>
+                    <td>product name</td>
+                    <td><input v-model.trim="bean.name" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>product subtitle</td>
+                    <td><input v-model.trim="bean.subTitle" type="text" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>product original price</td>
+                    <td><input v-model.trim="bean.originalPrice" type="number" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>product promote price</td>
+                    <td><input v-model.trim="bean.promotePrice" type="number" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>product stock</td>
+                    <td><input v-model.trim="bean.stock" type="number" class="form-control"></td>
+                </tr>
+                <tr class="submitTR">
+                    <td colspan="2" align="center">
+                        <a href="#nowhere"  @click="add" class="btn btn-success">submit</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:replace="include/admin/adminFooter::html" ></div>
+</body>
+</html>
