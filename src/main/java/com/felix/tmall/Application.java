@@ -17,7 +17,7 @@ public class Application {
     static {
         PortUtil.checkPort(6379,"Redis server",true);
         PortUtil.checkPort(9300,"ElasticSearch server",true);
-        PortUtil.checkPort(5601,"Kibana server", true);
+        PortUtil.checkPort(5601,"Kibana server ", true);
     }
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
