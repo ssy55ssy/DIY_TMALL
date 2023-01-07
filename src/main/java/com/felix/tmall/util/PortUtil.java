@@ -23,12 +23,12 @@ public class PortUtil {
 	public static void checkPort(int port, String server, boolean shutdown) {
 		if(!testPort(port)) {
 			if(shutdown) {
-				String message =String.format("在端口 %d 未检查得到 %s 启动%n",port,server);
+				String message =String.format("hasn't find %s started in port: %d %n",server,port);
 				JOptionPane.showMessageDialog(null, message);
 				System.exit(1);
 			}
 			else {
-				String message =String.format("在端口 %d 未检查得到 %s 启动%n,是否继续?",port,server);
+				String message =String.format("\"hasn't find %s started in port: %d %n\"continue or not?",server,port);
 			    if(JOptionPane.OK_OPTION != 	JOptionPane.showConfirmDialog(null, message)) 
 					System.exit(1);
 			    

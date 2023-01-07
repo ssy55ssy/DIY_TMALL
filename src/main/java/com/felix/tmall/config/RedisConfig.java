@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
  
 @Configuration
-//Redis 缓存配置类
+//Redis config class
 public class RedisConfig extends CachingConfigurerSupport {
  
     @Bean

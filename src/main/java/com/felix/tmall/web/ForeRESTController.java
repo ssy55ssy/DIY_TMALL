@@ -59,7 +59,7 @@ public class ForeRESTController {
         boolean exist = userService.isExist(name);
 
         if(exist){
-            String message ="用户名已经被使用,不能使用";
+            String message ="the username has been used";
             return Result.fail(message);
         }
 
@@ -91,7 +91,7 @@ public class ForeRESTController {
             session.setAttribute("user", user);
             return Result.success();
         } catch (AuthenticationException e) {
-            String message ="账号密码错误";
+            String message ="wrong password";
             return Result.fail(message);
         }
 
@@ -127,7 +127,7 @@ public class ForeRESTController {
         if(subject.isAuthenticated())
             return Result.success();
         else
-           return Result.fail("未登录");
+           return Result.fail("unlogin");
     }
     @GetMapping("forecategory/{cid}")
     public Object category(@PathVariable int cid,String sort) {
@@ -244,7 +244,7 @@ public class ForeRESTController {
     public Object changeOrderItem( HttpSession session, int pid, int num) {
         User user =(User)  session.getAttribute("user");
         if(null==user)
-            return Result.fail("未登录");
+            return Result.fail("unlogin");
 
         List<OrderItem> ois = orderItemService.listByUser(user);
         for (OrderItem oi : ois) {
@@ -260,7 +260,7 @@ public class ForeRESTController {
     public Object deleteOrderItem(HttpSession session,int oiid){
         User user =(User)  session.getAttribute("user");
         if(null==user)
-            return Result.fail("未登录");
+            return Result.fail("unlogin");
         orderItemService.delete(oiid);
         return Result.success();
     }
@@ -268,7 +268,7 @@ public class ForeRESTController {
     public Object createOrder(@RequestBody Order order,HttpSession session){
         User user =(User)  session.getAttribute("user");
         if(null==user)
-            return Result.fail("未登录");
+            return Result.fail("unlogin");
         String orderCode = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()) + RandomUtils.nextInt(10000);
         order.setOrderCode(orderCode);
         order.setCreateDate(new Date());
@@ -298,7 +298,7 @@ public class ForeRESTController {
     public Object bought(HttpSession session) {
         User user =(User)  session.getAttribute("user");
         if(null==user)
-            return Result.fail("未登录");
+            return Result.fail("unlogin");
         List<Order> os= orderService.listByUserWithoutDelete(user);
         orderService.removeOrderFromOrderItem(os);
         return os;

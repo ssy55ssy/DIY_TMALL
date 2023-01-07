@@ -33,7 +33,7 @@ public class Page4Navigator<T> {
     int[] navigatepageNums;
      
     public Page4Navigator() {
-        //这个空的分页是为了 Redis 从 json格式转换为 Page4Navigator 对象而专门提供的
+        //this empty constructor is used to translate json into Page4Navigator
     }
      
     public Page4Navigator(Page<T> pageFromJPA,int navigatePages) {
@@ -70,31 +70,31 @@ public class Page4Navigator<T> {
         int navigatepageNums[];
         int totalPages = getTotalPages();
         int num = getNumber();
-        //当总页数小于或等于导航页码数时
+        //when the total <= current page
         if (totalPages <= navigatePages) {
             navigatepageNums = new int[totalPages];
             for (int i = 0; i < totalPages; i++) {
                 navigatepageNums[i] = i + 1;
             }
-        } else { //当总页数大于导航页码数时
+        } else { //when the total> current page
             navigatepageNums = new int[navigatePages];
             int startNum = num - navigatePages / 2;
             int endNum = num + navigatePages / 2;
  
             if (startNum < 1) {
                 startNum = 1;
-                //(最前navigatePages页
+                //(first page
                 for (int i = 0; i < navigatePages; i++) {
                     navigatepageNums[i] = startNum++;
                 }
             } else if (endNum > totalPages) {
                 endNum = totalPages;
-                //最后navigatePages页
+                //last page
                 for (int i = navigatePages - 1; i >= 0; i--) {
                     navigatepageNums[i] = endNum--;
                 }
             } else {
-                //所有中间页
+                //all mid pages
                 for (int i = 0; i < navigatePages; i++) {
                     navigatepageNums[i] = startNum++;
                 }

@@ -62,28 +62,28 @@ public class Order {
 	public String getStatusDesc(){
 		if(null!=statusDesc)
 			return statusDesc;
-		String desc ="未知";
+		String desc ="unknown";
 		switch(status){
 			case OrderService.waitPay:
-				desc="待付";
+				desc="wait to pay";
 				break;
 			case OrderService.waitDelivery:
-				desc="待发";
+				desc="wait to deliver";
 				break;
 			case OrderService.waitConfirm:
-				desc="待收";
+				desc="wait to receive";
 				break;
 			case OrderService.waitReview:
-				desc="等评";
+				desc="wait to comment";
 				break;
 			case OrderService.finish:
-				desc="完成";
+				desc="finiished";
 				break;
 			case OrderService.delete:
-				desc="刪除";
+				desc="deleted";
 				break;
 			default:
-				desc="未知";
+				desc="unknown";
 		}
 		statusDesc = desc;
 		return statusDesc;

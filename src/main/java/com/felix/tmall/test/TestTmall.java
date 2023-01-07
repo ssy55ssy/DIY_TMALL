@@ -8,7 +8,7 @@ import java.sql.Statement;
 public class TestTmall {
   
     public static void main(String args[]){
-        //准备分类测试数据：
+        //prepare test data：
   
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -23,12 +23,12 @@ public class TestTmall {
         )
         {
             for (int i = 1; i <=10 ; i++) {
-                String sqlFormat = "insert into category values (null, '测试分类%d')";
+                String sqlFormat = "insert into category values (null, 'test class%d')";
                 String sql = String.format(sqlFormat, i);
                 s.execute(sql);
             }
              
-            System.out.println("已经成功创建10条分类测试数据");
+            System.out.println("has created 10 test data successfully");
   
         } catch (SQLException e) {
             // TODO Auto-generated catch block
