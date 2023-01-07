@@ -1,5 +1,5 @@
-This project is a simple DIY tomcat, which has most functions of tomcat.
+This project uses springboot framework to imitate the whole station of Tmall(a shopping app).
 
-This DIY tomcat including following functions: 1.Servlet(invoke servlet, JSP servlet, client jump, server jump) 2.Filter 3.Listener 4.classloader(web application classloader, hot load) 5. Dynamic war deployment 6. Cookie
+This project including the function of backstage feature(product management, order management, user management) and forestage features(homepage, showing product details, the whole shopping process)
 
-technology stack: multithreading, reflection, http protocol, junit, jsoup
+technology stack: springboot, shiro, redis, REST interface development, elasticsearch, vue
